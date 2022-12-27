@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+
+{% block head %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <link rel="shortcut icon" type="image/png" href="{{ url_for('static', filename='icon/favicon.ico') }}">
+
+
+    <!--STYLE-->
+
+    {% block styles %}
+        {{ bootstrap.load_css() }}
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css')}}">
+    {% endblock styles %}
+
+    <!--TITLE-->
+    {% block title %}
+        <title>{{ title if title else 'Referral Service' }}</title>
+    {% endblock title %}
+
+{% endblock head %}
+
+</head>
+
+<body>
+
+<!--MENU-->
+{% block menu %}
+
+    {% include 'menu.html' %}
+
+{% endblock menu %}
+
+<!--CONTENT-->
+<div class="content">
+
+    <div class="row d-flex justify-content-center">
+
+        <div class="col-6 mb-5 text-center">
+
+            {% block flash %}
+            {% with messages = get_flashed_messages(with_categories=True) %}
+
+            {% if messages %}
+            {% for category, message in messages %}
+            <div class="alert alert-{{ category }}">
+                {{ message }}
+            </div>
+            {% endfor %}
+            {% endif %}
+
+            {% endwith %}
+            {% endblock flash %}
+        </div>
+    </div>
+
+
+    {% block content %}
+    {% endblock content %}
+</div>
+
+<!--FOOTER-->
+{% block footer %}
+
+    <footer class="footer">Все права защищены!<br>
+
+        &#169; Надеюсь 2022
+
+    </footer>
+
+{% endblock footer %}
+
+<!--SCRIPT-->
+{% block scripts %}
+    {{ bootstrap.load_js() }}
+{% endblock scripts %}
+</body>
+</html>

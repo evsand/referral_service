@@ -1,5 +1,6 @@
 from datetime import datetime
 from flask_login import UserMixin
+from werkzeug.security import generate_password_hash, check_password_hash
 
 from app import db
 
@@ -8,8 +9,8 @@ class Users(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50),  nullable=True)
     second_name = db.Column(db.String(50),  nullable=True)
-    email = db.Column(db.String(50), unique=True, nullable=True)
-    hashed_psw = db.Column(db.String(500), nullable=True)
+    email = db.Column(db.String(50), unique=True)
+    hashed_psw = db.Column(db.String(500))
     gender = db.Column(db.String(500), nullable=True)
     city = db.Column(db.String(500), nullable=True)
     phone_number = db.Column(db.String(500), unique=True, nullable=True)
@@ -18,6 +19,12 @@ class Users(db.Model, UserMixin):
 
     def __repr__(self):
         return f'User {self.id}'
+
+    def set_password(self, password):
+        self.hashed_psw = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_psw, password)
 
 
 class CompanyCategory(db.Model):
