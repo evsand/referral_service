@@ -9,3 +9,5 @@ if __name__ == '__main__':
         # disable debug mode when deploy on server
         # NO GIT push DB
         app.run(debug=True, port=5555)
+
+

@@ -29,8 +29,10 @@ class Users(db.Model, UserMixin):
 
 class CompanyCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(500), nullable=True)
+    # title = db.Column(db.String(30), unique=True, nullable=False)
+    title = db.Column(db.String(30), nullable=False)
+
+    title_ru = db.Column(db.String(30), nullable=True)
 
 
 class Company(db.Model, UserMixin):
@@ -61,8 +63,11 @@ class Coupon(db.Model):
 
 class ProductCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    title = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(500), nullable=True)
+    title = db.Column(db.String(30), nullable=True)
+    # title_ru = db.Column(db.String(30), unique=True, nullable=False)
+    ##############
+    category_id = db.Column(db.Integer, db.ForeignKey(CompanyCategory.id))
+    ########################################################################
 
 
 class Products(db.Model):

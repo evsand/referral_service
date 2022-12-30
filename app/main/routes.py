@@ -12,6 +12,16 @@ def index():
 def load_user(id):
     return Users.query.get(int(id))
 
+##################################################################
+##################### Delete me please ###########################
+##################################################################
+
+from flask import jsonify
+
+@bp.route('/test')
+def test():
+    return jsonify({'seccesfull': 'response'})
+
 '''
 @bp.before_app_request
 def before_request():
