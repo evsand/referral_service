@@ -1,0 +1,197 @@
+{
+    "CompanyCategory": [
+        {
+            "title": "entertainments",
+            "title_ru": "развлечения",
+            "description": "Развлечения в Санкт-Петербурге"
+        },
+        {
+            "title": "health",
+            "title_ru": "здоровье",
+            "description": "Обследование здоровья в Санкт-Петербурге"
+        },
+        {
+            "title": "beauty",
+            "title_ru": "красота",
+            "description": "Купоны на скидку в салоны красоты Санкт-Петербурге"
+        },
+        {
+            "title": "education",
+            "title_ru": "обучение",
+            "description": "Обучение в Санкт-Петербурге"
+        },
+        {
+            "title": "auto",
+            "title_ru": "авто",
+            "description": "Обслуживание автомобиля в Санкт-Петербурге"
+        },
+        {
+            "title": "restaurant",
+            "title_ru": "рестораны и кафе",
+            "description": "Рестораны и кафе в Санкт-Петербурге"
+        },
+        {
+            "title": "other",
+            "title_ru": "разное",
+            "description": "Услуги в Санкт-Петербурге"
+        }
+    ],
+    "ProductCategory": [
+        {
+            "title": "прогулки",
+            "category_id": "1"
+        },
+        {
+            "title": "квесты",
+            "category_id": "1"
+        },
+        {
+            "title": "концерты",
+            "category_id": "1"
+        },
+        {
+            "title": "другое",
+            "category_id": "1"
+        },
+        {
+            "title": "выставки и экскурсии",
+            "category_id": "1"
+        },
+        {
+            "title": "боулинг и бильярд",
+            "category_id": "1"
+        },
+        {
+            "title": "картинг и квадроциклы",
+            "category_id": "1"
+        },
+        {
+            "title": "пейнтбол и лазертаг",
+            "category_id": "1"
+        },
+        {
+            "title": "гинекология и урология",
+            "category_id": "2"
+        },
+        {
+            "title": "КТ и МРТ",
+            "category_id": "2"
+        },
+        {
+            "title": "УЗИ",
+            "category_id": "2"
+        },
+        {
+            "title": "профильные специалисты",
+            "category_id": "2"
+        },
+        {
+            "title": "стоматология",
+            "category_id": "2"
+        },
+        {
+            "title": "диагностика, обследование",
+            "category_id": "2"
+        },
+        {
+            "title": "коррекция зрения",
+            "category_id": "2"
+        },
+        {
+            "title": "фитнес",
+            "category_id": "2"
+        },
+        {
+            "title": "другое",
+            "category_id": "2"
+        },
+        {
+            "title": "шугаринг и восковая эпиляция",
+            "category_id": "3"
+        },
+        {
+            "title": "лазерная эпиляция",
+            "category_id": "3"
+        },
+        {
+            "title": "уход за волосами",
+            "category_id": "3"
+        },
+        {
+            "title": "барбершоп",
+            "category_id": "3"
+        },
+        {
+            "title": "эпиляция",
+            "category_id": "3"
+        },
+        {
+            "title": "уход за лицом",
+            "category_id": "3"
+        },
+        {
+            "title": "СПА и массаж",
+            "category_id": "3"
+        },
+        {
+            "title": "маникюр и педикюр",
+            "category_id": "3"
+        },
+        {
+            "title": "коррекция фигуры",
+            "category_id": "3"
+        },
+        {
+            "title": "другое",
+            "category_id": "3"
+        },
+        {
+            "title": "автошколы",
+            "category_id": "4"
+        },
+        {
+            "title": "курсы иностранных языков",
+            "category_id": "4"
+        },
+        {
+            "title": "профессиональное образование",
+            "category_id": "4"
+        },
+        {
+            "title": "другое",
+            "category_id": "4"
+        },
+        {
+            "title": "шиномонтаж",
+            "category_id": "5"
+        },
+        {
+            "title": "мойка",
+            "category_id": "5"
+        },
+        {
+            "title": "автосервис",
+            "category_id": "5"
+        },
+        {
+            "title": "детейлинг",
+            "category_id": "5"
+        },
+        {
+            "title": "Другое",
+            "category_id": "5"
+        },
+        {
+            "title": "Рестораны",
+            "category_id": "6"
+        },
+        {
+            "title": "Доставка еды",
+            "category_id": "6"
+        },
+        {
+            "title": "Банкеты и мероприятия",
+            "category_id": "6"
+        }
+    ]
+}

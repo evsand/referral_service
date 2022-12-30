@@ -11,7 +11,7 @@ bootstrap = Bootstrap5()
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.login_message = 'Авторизуйтесь для доступа к закрытым страницам'
-login_manager.login_message_category = 'success'
+login_manager.login_message_category = 'info'
 
 def create_app():
     app = Flask(__name__)
@@ -23,6 +23,9 @@ def create_app():
 
     from app.auth import bp as auth_bp
     app.register_blueprint(auth_bp, url_prefix='/auth')
+
+    from app.user import bp as user_bp
+    app.register_blueprint(user_bp, url_prefix='/user')
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
