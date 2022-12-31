@@ -2,6 +2,7 @@ from datetime import datetime
 
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
+from sqlalchemy_utils import PhoneNumberType
 
 from app import db, login_manager
 
@@ -13,7 +14,8 @@ class Users(db.Model, UserMixin):
     hashed_psw = db.Column(db.String(500))
     gender = db.Column(db.String(500), nullable=True)
     city = db.Column(db.String(500), nullable=True)
-    phone_number = db.Column(db.String(500), unique=True, nullable=True)
+    phone_number = db.Column(db.String(50), unique=True, nullable=True)
+    #phone_number = db.Column(PhoneNumberType(region='RU'), unique=True, nullable=True)
     photo = db.Column(db.String(500), default='') # добавить дефолтное фото
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
