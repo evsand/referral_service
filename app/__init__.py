@@ -6,12 +6,21 @@ from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 
 
+
+
 db = SQLAlchemy()
 bootstrap = Bootstrap5()
 login_manager = LoginManager()
 login_manager.login_view = 'login'
 login_manager.login_message = 'Авторизуйтесь для доступа к закрытым страницам'
 login_manager.login_message_category = 'info'
+
+
+def create_data(load_company):
+    from app.load_data import LoadData
+    data = LoadData(load_company=load_company)
+    data.create_data()                
+
 
 def create_app():
     app = Flask(__name__)
@@ -29,5 +38,8 @@ def create_app():
 
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
+
+    from app.company import bp as company_bp
+    app.register_blueprint(company_bp, url_prefix='/company')
 
     return app

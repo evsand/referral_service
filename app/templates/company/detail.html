@@ -1,0 +1,40 @@
+{% extends "layout.html" %}
+
+
+{% block title %}
+  <title>Описание компании</title>
+{% endblock %}
+
+{% block content %}
+  <div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="display-5">Описание компании</h1>
+      <img src="{{ img_path }}" width="200" height="200" alt="Не найдено">
+    </div>
+  </div>
+
+  <div class="row">
+      <table class="table table-striped table-hover">
+        <tbody>
+        <tr>
+            <th scope="row">Название компании</th>
+            <td colspan="2">{{company.title}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Описание</th>
+            <td colspan="2">{{company.description}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Адрес</th>
+            <td colspan="2">{{company.address}}</td>
+        </tr>
+        <tr>
+            <th scope="row">Контакты</th>
+            <td colspan="2">{{company.phone_number}}</td>
+        </tr>
+        </tbody>
+    </table>
+  </div>
+</div>
+{% endblock %}

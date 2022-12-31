@@ -1,0 +1,30 @@
+{% extends "layout.html" %}
+
+
+{% block title %} 
+  <title>Компании</title>
+{% endblock %} 
+
+{% block content %}
+  <div class="container">
+  <div class="row">
+    <div class="col">
+      <h1 class="display-5">Компании</h1>
+    </div>
+  </div>
+  <div class="row">
+      {% for company in companies %}
+        <div class="col-lg-4 col-md-3 col-sm-10 mr-auto">
+          {% with obj=company, img="/static/users_img/"+company.category.title+'/'+company.logo %}
+      		{% include "components/cards.html" %}
+    	  {% endwith %}
+
+          {% if loop.index %3 %}
+            </div>
+          {% else %}
+            </div></div><br><div class="row">
+          {% endif %}
+      {% endfor %}
+  </div>
+</div>
+{% endblock %}
