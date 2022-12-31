@@ -1,10 +1,11 @@
 from datetime import datetime
+
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-
+from sqlalchemy_utils import PhoneNumberType
 from sqlalchemy.orm import relationship
 
-from app import db
+from app import db, login_manager
 
 
 class Users(db.Model, UserMixin):
@@ -15,7 +16,8 @@ class Users(db.Model, UserMixin):
     hashed_psw = db.Column(db.String(500))
     gender = db.Column(db.String(500), nullable=True)
     city = db.Column(db.String(500), nullable=True)
-    phone_number = db.Column(db.String(500), unique=True, nullable=True)
+    phone_number = db.Column(db.String(50), unique=True, nullable=True)
+    #phone_number = db.Column(PhoneNumberType(region='RU'), unique=True, nullable=True)
     photo = db.Column(db.String(500), default='') # добавить дефолтное фото
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -27,6 +29,11 @@ class Users(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_psw, password)
+
+
+@login_manager.user_loader
+def load_user(id):
+    return Users.query.get(int(id))
 
 
 class CompanyCategory(db.Model):
