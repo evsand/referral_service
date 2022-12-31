@@ -5,7 +5,6 @@ from flask_migrate import Migrate
 from flask_login import LoginManager
 from flask_bootstrap import Bootstrap5
 
-import click
 
 
 
@@ -16,6 +15,11 @@ login_manager.login_view = 'login'
 login_manager.login_message = 'Авторизуйтесь для доступа к закрытым страницам'
 login_manager.login_message_category = 'success'
 
+
+def create_data(load_company):
+    from app.load_data import LoadData
+    data = LoadData(load_company=load_company)
+    data.create_data()                
 
 
 def create_app():
@@ -32,13 +36,8 @@ def create_app():
     from app.main import bp as main_bp
     app.register_blueprint(main_bp)
 
-
-    @app.cli.command("create-category")
-    @click.argument("flag")
-    def create_user(flag):
-        from app.load_data import LoadData
-        data = LoadData(flag)
-        data.create_data()
+    from app.company import bp as company_bp
+    app.register_blueprint(company_bp, url_prefix='/company')
 
     return app
 

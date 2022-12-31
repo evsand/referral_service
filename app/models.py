@@ -2,6 +2,8 @@ from datetime import datetime
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 
+from sqlalchemy.orm import relationship
+
 from app import db
 
 
@@ -38,14 +40,16 @@ class CompanyCategory(db.Model):
 class Company(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(120), unique=True, nullable=False)
-    description = db.Column(db.String(500), nullable=True)
-    email = db.Column(db.String(50), unique=True, nullable=True)
-    hashed_psw = db.Column(db.String(500), nullable=True)
-    phone_number = db.Column(db.String(500), unique=True, nullable=True)
-    main_address = db.Column(db.String(500), nullable=True)
+    description = db.Column(db.String(500), nullable=False)
+    email = db.Column(db.String(50), unique=True, nullable=False)
+    hashed_psw = db.Column(db.String(500), nullable=False)
+    phone_number = db.Column(db.String(500), unique=True)
+    address = db.Column(db.String(500))
     date = db.Column(db.DateTime, default=datetime.utcnow)
     logo = db.Column(db.String, default='')  # добавить дефолтное фото
+    
     category_id = db.Column(db.Integer, db.ForeignKey(CompanyCategory.id))
+    category = relationship("CompanyCategory")
 
     def __repr__(self):
         return f'<Company  {self.title}>'
@@ -65,9 +69,9 @@ class ProductCategory(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     title = db.Column(db.String(30), nullable=True)
     # title_ru = db.Column(db.String(30), unique=True, nullable=False)
-    ##############
+    
     category_id = db.Column(db.Integer, db.ForeignKey(CompanyCategory.id))
-    ########################################################################
+    
 
 
 class Products(db.Model):
