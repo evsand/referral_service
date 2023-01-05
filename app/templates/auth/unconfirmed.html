@@ -1,0 +1,18 @@
+{% extends 'layout.html' %}
+{% from 'bootstrap5/form.html' import render_form %}
+
+{% block content %}
+<div class="h-100">
+    <div class="row d-flex justify-content-center">
+        <div class="col-6">
+            <div class="row">
+                <div class="col-12  mb-5">
+                    <h3 class="text-primary">Подтвердите вашу почту</h3>
+                </div>
+            </div>
+            <p>У Вас не подтвержденный аккаунт. Пожалуйста, проверьте Вашу почту (и папку спам). Вам было отправлено письмо с подтверждением аккаунта.</p>
+            <p>Не получили письмо? <a href="#">Отправить</a>.</p>
+        </div>
+    </div>
+</div>
+{% endblock %}
