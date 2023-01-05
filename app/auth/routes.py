@@ -5,6 +5,7 @@ from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, RequestResetForm, ResetPasswordForm
 from app.models import Users
+from app.auth.email import send_password_reset_email
 
 
 
@@ -61,10 +62,14 @@ def reset_password_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = Users.query.filter_by(email=form.email.data).first()
-        #if user:
-            #send_password_reset_email(user)
-        flash('Check your email for the instructions to reset your password')
-        return redirect(url_for('auth.login'))
+        if user:
+            send_password_reset_email(user)
+            flash('На указанный email были отправлены инструкции по восстановлению пароля', 'info')
+            return redirect(url_for('auth.login'))
+        else:
+            flash('Пользователя с таким email не существует!', 'info')
+
+
     return render_template('auth/reset_password_request.html',
                            title='Сброс пароля', form=form)
 
@@ -80,6 +85,6 @@ def reset_password(token):
     if form.validate_on_submit():
         user.set_password(form.password.data)
         db.session.commit()
-        flash('Your password has been reset.')
+        flash('Ваш пароль был обновлён!')
         return redirect(url_for('auth.login'))
-    return render_template('auth/reset_password.html', form=form)
+    return render_template('auth/reset_password.html', form=form, title='Новый пароль')

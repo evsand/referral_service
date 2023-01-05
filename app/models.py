@@ -1,11 +1,18 @@
 from datetime import datetime
-
+from time import time
+from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
-from sqlalchemy_utils import PhoneNumberType
+import jwt
+
 from sqlalchemy.orm import relationship
 
 from app import db, login_manager
+
+
+@login_manager.user_loader
+def load_user(users_id):
+    return Users.query.get(int(users_id))
 
 
 class Users(db.Model, UserMixin):
@@ -17,6 +24,8 @@ class Users(db.Model, UserMixin):
     gender = db.Column(db.String(500), nullable=True)
     city = db.Column(db.String(500), nullable=True)
     phone_number = db.Column(db.String(50), unique=True, nullable=True)
+    #token = db.Column(db.String(32), index=True, unique=True)
+    #token_expiration = db.Column(db.DateTime)
     #phone_number = db.Column(PhoneNumberType(region='RU'), unique=True, nullable=True)
     photo = db.Column(db.String(500), default='') # добавить дефолтное фото
     date = db.Column(db.DateTime, default=datetime.utcnow)
@@ -30,10 +39,19 @@ class Users(db.Model, UserMixin):
     def check_password(self, password):
         return check_password_hash(self.hashed_psw, password)
 
+    def get_reset_password_token(self, expires_in=600):
+        return jwt.encode(
+            {'reset_password': self.id, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
 
-@login_manager.user_loader
-def load_user(id):
-    return Users.query.get(int(id))
+    @staticmethod
+    def verify_reset_password_token(token):
+        try:
+            id = jwt.decode(token, current_app.config['SECRET_KEY'],
+                            algorithms=['HS256'])['reset_password']
+        except:
+            return None
+        return Users.query.get(id)
 
 
 class CompanyCategory(db.Model):
