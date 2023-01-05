@@ -1,13 +1,13 @@
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
-from flask_login import login_user, logout_user, current_user
+from flask_login import login_user, logout_user, current_user, login_required
 
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, RequestResetForm, ResetPasswordForm
 from app.models import Users
-from app.auth.email import send_password_reset_email
-
+from app.auth.email import send_password_reset_email, send_confirm_email
+from app.auth.decorators import check_confirmed
 
 
 @bp.route('/login', methods=['GET', 'POST'])
@@ -45,16 +45,49 @@ def register():
             second_name=form.second_name.data,
             email=form.email.data,
             gender=form.gender.data,
-            phone_number=form.phone_number.data
+            phone_number=form.phone_number.data,
         )
         user.set_password(form.password.data)
         db.session.add(user)
         db.session.commit()
-        flash('Регистрация прошла успешно')
-        return redirect(url_for('auth.login'))
+        send_confirm_email(user)
+
+        login_user(user)
+
+        flash('Подтвердите свой email. На указанную почту отправлено письмо', 'success')
+
+        return redirect(url_for('auth.unconfirmed'))
 
     return render_template('auth/register.html', title='Регистрация',
                            form=form)
+
+
+@bp.route('/confirm/<token>')
+@login_required
+def confirm_email(token):
+    try:
+        email = Users.confirm_token(token)
+    except:
+        flash('Подтверждающая ссылка просрочена', 'danger')
+    user = Users.query.filter_by(email=email).first_or_404()
+    if user.confirmed:
+        flash('Ваш аккаунт уже подтвержден. Пожалуйста, авторизуйтесь!', 'success')
+        return redirect(url_for('auth.login'))
+    else:
+        user.confirmed = True
+        db.session.add(user)
+        db.session.commit()
+        flash('Аккаунт подтвержден. Спасибо!', 'success')
+    return redirect(url_for('main.index'))
+
+
+@bp.route('/unconfirmed')
+@login_required
+def unconfirmed():
+    if current_user.confirmed:
+        return redirect('main.home')
+    flash('Please confirm your account!', 'warning')
+    return render_template('auth/unconfirmed.html')
 
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])

@@ -32,14 +32,16 @@ class LoadData():
                 )
             db.session.add(prod_cat)
         db.session.commit()
+
     @staticmethod
-    def __check_prod_category(self):
+    def __check_prod_category():
         count_prod = len(db.session.query(ProductCategory).all())
         if count_prod == 0:
             return True
         return False
 
-    def __check_comp_category(self):
+    @staticmethod
+    def __check_comp_category():
         count_comp = len(db.session.query(CompanyCategory).all())        
         if count_comp == 0:
             return True
@@ -55,8 +57,8 @@ class LoadData():
         if self.__check_comp_category():
             self.__company_category_load(data['CompanyCategory'])
 
-    @@staticmethod
-    def __check_company(self):
+    @staticmethod
+    def __check_company():
         count_comp = len(db.session.query(Company).all())        
         if count_comp == 0:
             return True

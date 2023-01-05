@@ -24,8 +24,7 @@ class Users(db.Model, UserMixin):
     gender = db.Column(db.String(500), nullable=True)
     city = db.Column(db.String(500), nullable=True)
     phone_number = db.Column(db.String(50), unique=True, nullable=True)
-    #token = db.Column(db.String(32), index=True, unique=True)
-    #token_expiration = db.Column(db.DateTime)
+    confirmed = db.Column(db.Boolean, nullable=False, default=False)
     #phone_number = db.Column(PhoneNumberType(region='RU'), unique=True, nullable=True)
     photo = db.Column(db.String(500), default='')# добавить дефолтное фото
     date = db.Column(db.DateTime, default=datetime.utcnow)
@@ -38,6 +37,25 @@ class Users(db.Model, UserMixin):
 
     def check_password(self, password):
         return check_password_hash(self.hashed_psw, password)
+
+    def generate_confirmation_token(self, expires_in=600):
+        return jwt.encode(
+            {'confirm_mail': self.email, 'exp': time() + expires_in},
+            current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
+        #serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
+        #return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
+
+    @staticmethod
+    def confirm_token(token):
+        try:
+            confirm_mail = jwt.decode(
+                token,
+                current_app.config['SECRET_KEY'],
+                algorithms=['HS256']
+            )['confirm_mail']
+        except:
+            return None
+        return confirm_mail
 
     def get_reset_password_token(self, expires_in=600):
         return jwt.encode(
