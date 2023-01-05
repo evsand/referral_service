@@ -10,9 +10,6 @@ def index():
     return render_template('index.html')
 
 
-
-
-
 '''
 @bp.before_app_request
 def before_request():

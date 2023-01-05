@@ -1,8 +1,9 @@
-from flask import jsonify, url_for, make_response, render_template
 import os
 
+from flask import jsonify, url_for, make_response, render_template
 from app.company import bp
 from app.models import *
+
 
 @bp.route('/')
 def get_all_companies():

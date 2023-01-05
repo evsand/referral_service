@@ -2,7 +2,6 @@ from flask import flash
 from flask_wtf import FlaskForm
 from wtforms import StringField, SubmitField, BooleanField, PasswordField, SelectField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
-#from wtforms_components import PhoneNumberField
 from sqlalchemy_utils import PhoneNumberType
 import phonenumbers
 

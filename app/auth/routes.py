@@ -1,6 +1,7 @@
 from flask import render_template, redirect, url_for, flash, request
 from werkzeug.urls import url_parse
 from flask_login import login_user, logout_user, current_user
+
 from app import db
 from app.auth import bp
 from app.auth.forms import LoginForm, RegistrationForm, RequestResetForm, ResetPasswordForm
@@ -51,6 +52,7 @@ def register():
         db.session.commit()
         flash('Регистрация прошла успешно')
         return redirect(url_for('auth.login'))
+
     return render_template('auth/register.html', title='Регистрация',
                            form=form)
 
@@ -68,7 +70,6 @@ def reset_password_request():
             return redirect(url_for('auth.login'))
         else:
             flash('Пользователя с таким email не существует!', 'info')
-
 
     return render_template('auth/reset_password_request.html',
                            title='Сброс пароля', form=form)

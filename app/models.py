@@ -27,7 +27,7 @@ class Users(db.Model, UserMixin):
     #token = db.Column(db.String(32), index=True, unique=True)
     #token_expiration = db.Column(db.DateTime)
     #phone_number = db.Column(PhoneNumberType(region='RU'), unique=True, nullable=True)
-    photo = db.Column(db.String(500), default='') # добавить дефолтное фото
+    photo = db.Column(db.String(500), default='')# добавить дефолтное фото
     date = db.Column(db.DateTime, default=datetime.utcnow)
 
     def __repr__(self):
@@ -47,11 +47,14 @@ class Users(db.Model, UserMixin):
     @staticmethod
     def verify_reset_password_token(token):
         try:
-            id = jwt.decode(token, current_app.config['SECRET_KEY'],
-                            algorithms=['HS256'])['reset_password']
+            user_id = jwt.decode(
+                token,
+                current_app.config['SECRET_KEY'],
+                algorithms=['HS256']
+            )['reset_password']
         except:
             return None
-        return Users.query.get(id)
+        return Users.query.get(user_id)
 
 
 class CompanyCategory(db.Model):
@@ -96,7 +99,6 @@ class ProductCategory(db.Model):
     # title_ru = db.Column(db.String(30), unique=True, nullable=False)
     
     category_id = db.Column(db.Integer, db.ForeignKey(CompanyCategory.id))
-    
 
 
 class Products(db.Model):

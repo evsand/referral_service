@@ -8,7 +8,7 @@ from faker import Faker
 
 class LoadData():
 
-    def __init__(self, load_company: bool, load_category: bool=True):
+    def __init__(self, load_company: bool, load_category: bool = True):
         self.load_category = load_category
         self.load_company = load_company
         self.work_dir = os.getcwd()
@@ -23,7 +23,6 @@ class LoadData():
             db.session.add(com_cat)
         db.session.commit()
 
-
     def __product_category_load(self, data):
 
         for cat in data:
@@ -33,13 +32,12 @@ class LoadData():
                 )
             db.session.add(prod_cat)
         db.session.commit()
-        
+    @staticmethod
     def __check_prod_category(self):
         count_prod = len(db.session.query(ProductCategory).all())
         if count_prod == 0:
             return True
         return False
-        count_comp = len(db.session.query(CompanyCategory).all())
 
     def __check_comp_category(self):
         count_comp = len(db.session.query(CompanyCategory).all())        
@@ -57,6 +55,7 @@ class LoadData():
         if self.__check_comp_category():
             self.__company_category_load(data['CompanyCategory'])
 
+    @@staticmethod
     def __check_company(self):
         count_comp = len(db.session.query(Company).all())        
         if count_comp == 0:
@@ -79,14 +78,14 @@ class LoadData():
                 faker = Faker('ru_RU')
 
                 new_company = Company(
-                    title = i['title'],
-                    email = new_email,
-                    hashed_psw = hashed_password,
-                    category_id = company_category_id.id,
-                    description = i['description'],
-                    logo = i['photo'],
-                    phone_number = faker.phone_number(),
-                    address = faker.address()
+                    title=i['title'],
+                    email=new_email,
+                    hashed_psw=hashed_password,
+                    category_id=company_category_id.id,
+                    description=i['description'],
+                    logo=i['photo'],
+                    phone_number=faker.phone_number(),
+                    address=faker.address(),
                 )
 
                 db.session.add(new_company)
@@ -101,5 +100,3 @@ class LoadData():
             self.__create_category()
         if self.load_company:
             self.__create_company()
-
-
