@@ -20,3 +20,5 @@ class Config(object):
     MAIL_PORT = 465
     MAIL_USE_TLS = False
     MAIL_USE_SSL = True
+
+    ADMINS = ['referralservice.helper@gmail.com']

@@ -85,9 +85,18 @@ def confirm_email(token):
 @login_required
 def unconfirmed():
     if current_user.confirmed:
-        return redirect('main.home')
-    flash('Please confirm your account!', 'warning')
+        return redirect('main.index')
+    flash('Пожалуйста, подтвердите свой аккаунт!', 'warning')
     return render_template('auth/unconfirmed.html')
+
+
+@bp.route('/resend')
+@login_required
+def resend_confirmation():
+    print(current_user.email)
+    send_confirm_email(current_user)
+    flash('Новое подтверждение было отправлено на Вашу почту', 'success')
+    return redirect(url_for('auth.unconfirmed'))
 
 
 @bp.route('/reset_password_request', methods=['GET', 'POST'])
