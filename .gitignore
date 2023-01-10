@@ -4,3 +4,5 @@ __pycache__/
 .env
 app.db
 instance/
+.coverage
+.pytest_cache/

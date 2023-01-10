@@ -1,6 +1,4 @@
-from flask import current_app, url_for, render_template
-from flask_mail import Message
-from app import mail
+from flask import current_app, render_template
 from app.email import send_email
 
 

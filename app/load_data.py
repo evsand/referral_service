@@ -40,6 +40,7 @@ class LoadData():
             return True
         return False
 
+
     @staticmethod
     def __check_comp_category():
         count_comp = len(db.session.query(CompanyCategory).all())        

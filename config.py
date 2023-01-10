@@ -7,9 +7,8 @@ load_dotenv(os.path.join(basedir, '.env'))
 
 
 class Config(object):
-    SECRET_KEY = os.environ.get('SECRET_KEY') or 'you-will-never-guess'
-    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI') or \
-                              'sqlite:///' + os.path.join(basedir, 'app.db')
+    SECRET_KEY = os.environ.get('SECRET_KEY')
+    SQLALCHEMY_DATABASE_URI = os.environ.get('SQLALCHEMY_DATABASE_URI')
     SQLALCHEMY_TRACK_MODIFICATIONS = os.environ.get('SQLALCHEMY_TRACK_MODIFICATIONS')
     BOOTSTRAP_BOOTSWATCH_THEME = 'spacelab'
 
@@ -22,3 +21,10 @@ class Config(object):
     MAIL_USE_SSL = True
 
     ADMINS = ['referralservice.helper@gmail.com']
+
+
+class TestingConfig(Config):
+    TESTING = True
+    SQLALCHEMY_DATABASE_URI = f"sqlite:///{os.path.join(basedir, 'instance', 'test.db')}"
+    WTF_CSRF_ENABLED = False
+    #MAIL_SUPPRESS_SEND = False
