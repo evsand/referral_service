@@ -4,13 +4,13 @@ from flask_login import current_user, login_required
 from app import db
 from app.user import bp
 from app.user.forms import UpdateAccountForm
-from app.models import Users
+from app.models import User
 
 
 @bp.route('/profile', methods=['GET', 'POST'])
 @login_required
 def profile():
-    user = Users.query.filter_by(id=current_user.id).first()
+    user = User.query.filter_by(id=current_user.id).first()
     form = UpdateAccountForm()
 
     if request.method == 'GET':

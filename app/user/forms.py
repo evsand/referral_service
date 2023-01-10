@@ -6,7 +6,7 @@ from wtforms import StringField, SubmitField, FileField, RadioField
 from wtforms.validators import ValidationError, DataRequired, Email, EqualTo, Length
 import phonenumbers
 
-from app.models import Users
+from app.models import User
 
 
 class UpdateAccountForm(FlaskForm):
@@ -26,7 +26,7 @@ class UpdateAccountForm(FlaskForm):
 
     def validate_email(self, email):
         if email.data != current_user.email:
-            user = Users.query.filter_by(email=email.data).first()
+            user = User.query.filter_by(email=email.data).first()
             if user:
                 flash('Этот емайл уже занят. Пожалуйста, введите другой', 'danger')
                 raise ValidationError('That email is taken. Please choose a different one')
@@ -37,7 +37,7 @@ class UpdateAccountForm(FlaskForm):
             if not phonenumbers.is_valid_number(p):
                 raise ValueError()
             if phone_number.data != current_user.phone:
-                user = Users.query.filter_by(phone_number=phone_number.data).first()
+                user = User.query.filter_by(phone_number=phone_number.data).first()
                 if user:
                     flash(
                         'Этот номер уже зарегистрирован. Пожалуйста, введите другой',

@@ -2,6 +2,55 @@
 {% from 'bootstrap5/form.html' import render_form %}
 
 {% block content %}
+{#<div class="form-wrap">#}
+{#  <form class="form" method="post">#}
+{#    {{ form.csrf_token }}#}
+{##}
+{#    <h1 class="form__title">User Registration</h1>#}
+{##}
+{#    <div class="form__group">#}
+{#      <input type="text" id="first_name" name="first_name" class="form__input" placeholder=" " autocomplete="on" required>#}
+{#      <label for="first_name" class="form__label">Имя</label>#}
+{#      {% for error in form.email.errors %}#}
+{#        <p class="validation-error">[{{ error }}]</p>#}
+{#      {% endfor %}#}
+{#    </div>#}
+{##}
+{#      <div class="form__group">#}
+{#      <input type="text" id="second_name" name="second_name" class="form__input" placeholder=" " autocomplete="on" required>#}
+{#      <label for="second_name" class="form__label">Фамилия</label>#}
+{#      {% for error in form.email.errors %}#}
+{#        <p class="validation-error">[{{ error }}]</p>#}
+{#      {% endfor %}#}
+{#    </div>#}
+{##}
+{#      <div class="form__group">#}
+{#      <input type="text" id="email" name="email" class="form__input" placeholder=" " autocomplete="on" required>#}
+{#      <label for="email" class="form__label">Email</label>#}
+{#      {% for error in form.email.errors %}#}
+{#        <p class="validation-error">[{{ error }}]</p>#}
+{#      {% endfor %}#}
+{#    </div>#}
+{##}
+{#    <div class="form__group">#}
+{#      <input type="password" id="password" name="password" class="form__input" placeholder=" " required>#}
+{#      <label for="password" class="form__label">Пароль</label>#}
+{#      {% for error in form.password.errors %}#}
+{#        <p class="validation-error">[{{ error }}]</p>#}
+{#      {% endfor %}#}
+{#    </div>#}
+{##}
+{#    <div class="form__group">#}
+{#      <input type="password2" id="password2" name="password2" class="form__input" placeholder=" " required>#}
+{#      <label for="password2" class="form__label">Повторите пароль</label>#}
+{#      {% for error in form.password.errors %}#}
+{#        <p class="validation-error">[{{ error }}]</p>#}
+{#      {% endfor %}#}
+{#    </div>#}
+{##}
+{#    <button type="submit" class="form__button">Register</button>#}
+{#  </form>#}
+{#</div>#}
 
 <div class="h-100">
     <div class="row d-flex justify-content-center">
@@ -11,8 +60,9 @@
                     <h3 class="text-primary">Регистрация</h3>
                 </div>
             </div>
-            {{ render_form(form, horizontal_columns=('lg', 2, 100), button_style='btn btn-outline-primary', button_size='md') }}
+            {{ render_form(form, method="POST", horizontal_columns=('lg', 2, 100), button_style='btn btn-outline-primary', button_size='md') }}
         </div>
     </div>
 </div>
+
 {% endblock content %}

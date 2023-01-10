@@ -11,39 +11,55 @@ from app import db, login_manager
 
 
 @login_manager.user_loader
-def load_user(users_id):
-    return Users.query.get(int(users_id))
+def load_user(user_id):
+    return User.query.get(int(user_id))
 
 
-class Users(db.Model, UserMixin):
+class User(db.Model, UserMixin):
     id = db.Column(db.Integer, primary_key=True)
     first_name = db.Column(db.String(50),  nullable=True)
     second_name = db.Column(db.String(50),  nullable=True)
     email = db.Column(db.String(50), unique=True)
     hashed_psw = db.Column(db.String(500))
     gender = db.Column(db.String(500), nullable=True)
-    city = db.Column(db.String(500), nullable=True)
     phone_number = db.Column(db.String(50), unique=True, nullable=True)
     confirmed = db.Column(db.Boolean, nullable=False, default=False)
-    #phone_number = db.Column(PhoneNumberType(region='RU'), unique=True, nullable=True)
     photo = db.Column(db.String(500), default='')# добавить дефолтное фото
-    date = db.Column(db.DateTime, default=datetime.utcnow)
+    email_confirmation_sent_on = db.Column(db.DateTime, default=datetime.utcnow)
+
+    def __init__(self, first_name: str, second_name: str, email: str, password: str, gender: str, phone_number: str):
+        """Create a new User object
+
+        This constructor assumes that an email is sent to the new user to confirm
+        their email address at the same time that the user is registered.
+        """
+        self.first_name = first_name
+        self.second_name = second_name
+        self.email = email
+        self.hashed_psw = self._generate_password_hash(password)
+        self.registered_on = datetime.now()
+        self.gender = gender
+        self.phone_number = phone_number
+        self.email_confirmation_sent_on = datetime.now()
+        self.email_confirmed = False
+
+    def check_password(self, password: str):
+        return check_password_hash(self.hashed_psw, password)
+
+    def set_password(self, password: str):
+        self.hashed_psw = self._generate_password_hash(password)
+
+    @staticmethod
+    def _generate_password_hash(password_plaintext):
+        return generate_password_hash(password_plaintext)
 
     def __repr__(self):
         return f'User {self.id}'
-
-    def set_password(self, password):
-        self.hashed_psw = generate_password_hash(password)
-
-    def check_password(self, password):
-        return check_password_hash(self.hashed_psw, password)
 
     def generate_confirmation_token(self, expires_in=600):
         return jwt.encode(
             {'confirm_mail': self.email, 'exp': time() + expires_in},
             current_app.config['SECRET_KEY'], algorithm='HS256').decode('utf-8')
-        #serializer = URLSafeTimedSerializer(app.config['SECRET_KEY'])
-        #return serializer.dumps(email, salt=app.config['SECURITY_PASSWORD_SALT'])
 
     @staticmethod
     def confirm_token(token):
@@ -72,7 +88,7 @@ class Users(db.Model, UserMixin):
             )['reset_password']
         except:
             return None
-        return Users.query.get(user_id)
+        return User.query.get(user_id)
 
 
 class CompanyCategory(db.Model):
@@ -96,6 +112,12 @@ class Company(db.Model, UserMixin):
     
     category_id = db.Column(db.Integer, db.ForeignKey(CompanyCategory.id))
     category = relationship("CompanyCategory")
+
+    def set_password(self, password):
+        self.hashed_psw = generate_password_hash(password)
+
+    def check_password(self, password):
+        return check_password_hash(self.hashed_psw, password)
 
     def __repr__(self):
         return f'<Company  {self.title}>'
@@ -133,6 +155,6 @@ class Products(db.Model):
 class CreatedCoupon(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     coupon_id = db.Column(db.Integer, db.ForeignKey(Coupon.id))
-    user_id = db.Column(db.Integer, db.ForeignKey(Users.id))
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id))
     activations_count = db.Column(db.Integer, default=0)
     token = db.Column(db.String(500), nullable=True)

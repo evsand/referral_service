@@ -10,7 +10,7 @@ from flask_mail import Mail
 db = SQLAlchemy()
 bootstrap = Bootstrap5()
 login_manager = LoginManager()
-login_manager.login_view = 'login'
+login_manager.login_view = 'auth.login'
 login_manager.login_message = 'Авторизуйтесь для доступа к закрытым страницам'
 login_manager.login_message_category = 'info'
 
