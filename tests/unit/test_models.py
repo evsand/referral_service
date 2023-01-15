@@ -11,7 +11,7 @@ def test_new_user(new_user):
     assert new_user.email == 'test@test.ru'
     assert new_user.gender == 'Мужской'
     assert new_user.phone_number == '+5019015900'
-    assert not new_user.confirmed
+    assert not new_user.email_confirmed
 
 
 def test_set_password_user(new_user):

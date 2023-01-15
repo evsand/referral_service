@@ -145,6 +145,35 @@ def log_in_default_user(test_client, register_default_user):
     test_client.get('/auth/logout', follow_redirects=True)
 
 
+@pytest.fixture(scope='function')
+def confirm_email_default_user(test_client, log_in_default_user):
+    # Mark the user as having their email address confirmed
+    user = User.query.filter_by(email='test@test.ru').first()
+    user.email_confirmed = True
+    db.session.add(user)
+    db.session.commit()
+
+    yield user  # this is where the testing happens!
+
+    # Mark the user as not having their email address confirmed (clean up)
+    user = User.query.filter_by(email='test@test.ru').first()
+    user.email_confirmed = False
+    db.session.add(user)
+    db.session.commit()
+
+
+@pytest.fixture(scope='function')
+def afterwards_reset_default_user_password():
+    yield  # this is where the testing happens!
+
+    # Since a test using this fixture could change the password for the default user,
+    # reset the password back to the default password
+    user = User.query.filter_by(email='test@test.ru').first()
+    user.set_password('Qwerty123')
+    db.session.add(user)
+    db.session.commit()
+
+
 @pytest.fixture(scope='module')
 def new_company():
     company = Company(
