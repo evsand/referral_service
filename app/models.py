@@ -4,6 +4,7 @@ from flask import current_app
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 import jwt
+from jwt.exceptions import InvalidTokenError
 
 from sqlalchemy.orm import relationship
 
@@ -23,7 +24,7 @@ class User(db.Model, UserMixin):
     hashed_psw = db.Column(db.String(500))
     gender = db.Column(db.String(500), nullable=True)
     phone_number = db.Column(db.String(50), unique=True, nullable=True)
-    confirmed = db.Column(db.Boolean, nullable=False, default=False)
+    email_confirmed = db.Column(db.Boolean, nullable=False, default=False)
     photo = db.Column(db.String(500), default='')# добавить дефолтное фото
     email_confirmation_sent_on = db.Column(db.DateTime, default=datetime.utcnow)
 
@@ -63,14 +64,12 @@ class User(db.Model, UserMixin):
 
     @staticmethod
     def confirm_token(token):
-        try:
-            confirm_mail = jwt.decode(
+        confirm_mail = jwt.decode(
                 token,
                 current_app.config['SECRET_KEY'],
                 algorithms=['HS256']
             )['confirm_mail']
-        except:
-            return None
+
         return confirm_mail
 
     def get_reset_password_token(self, expires_in=600):
@@ -80,14 +79,12 @@ class User(db.Model, UserMixin):
 
     @staticmethod
     def verify_reset_password_token(token):
-        try:
-            user_id = jwt.decode(
-                token,
-                current_app.config['SECRET_KEY'],
-                algorithms=['HS256']
-            )['reset_password']
-        except:
-            return None
+        user_id = jwt.decode(
+            token,
+            current_app.config['SECRET_KEY'],
+            algorithms=['HS256']
+        )['reset_password']
+
         return User.query.get(user_id)
 
 

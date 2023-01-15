@@ -72,4 +72,4 @@ class ResetPasswordForm(FlaskForm):
     password = PasswordField('Пароль', validators=[DataRequired()])
     confirm_password = PasswordField('Подтвердите пароль',
                                      validators=[DataRequired(), EqualTo('password')])
-    submit = SubmitField('Сбросить пароль')
+    submit = SubmitField('Изменить пароль')

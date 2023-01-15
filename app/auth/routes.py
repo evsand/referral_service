@@ -73,15 +73,15 @@ def register():
 def confirm_email(token):
     try:
         email = User.confirm_token(token)
+        user = User.query.filter_by(email=email).first()
     except InvalidTokenError:
         flash('Подтверждающая ссылка просрочена или повреждена', 'danger')
         return redirect(url_for('auth.login'))
-    user = User.query.filter_by(email=email).first_or_404()
-    if user.confirmed:
-        flash('Ваш аккаунт уже подтвержден. Пожалуйста, авторизуйтесь!', 'success')
-        return redirect(url_for('auth.login'))
+
+    if user.email_confirmed:
+        flash('Ваш аккаунт уже подтвержден!', 'success')
     else:
-        user.confirmed = True
+        user.email_confirmed = True
         db.session.add(user)
         db.session.commit()
         flash('Аккаунт подтвержден. Спасибо!', 'success')
@@ -91,7 +91,7 @@ def confirm_email(token):
 @bp.route('/unconfirmed')
 @login_required
 def unconfirmed():
-    if current_user.confirmed:
+    if current_user.email_confirmed:
         return redirect('main.index')
     flash('Пожалуйста, подтвердите свой аккаунт!', 'warning')
     return render_template('auth/unconfirmed.html')
@@ -112,12 +112,12 @@ def reset_password_request():
     form = RequestResetForm()
     if form.validate_on_submit():
         user = User.query.filter_by(email=form.email.data).first()
-        if user:
+        if user.email_confirmed:
             send_password_reset_email(user)
             flash('На указанный email были отправлены инструкции по восстановлению пароля', 'info')
             return redirect(url_for('auth.login'))
         else:
-            flash('Пользователя с таким email не существует!', 'info')
+            flash('Пользователя с таким подтвержденным email не существует!', 'info')
 
     return render_template('auth/reset_password_request.html',
                            title='Сброс пароля', form=form)
@@ -131,7 +131,7 @@ def reset_password(token):
         user = User.verify_reset_password_token(token)
     except InvalidTokenError:
         flash('Подтверждающая ссылка просрочена или повреждена', 'danger')
-        return redirect(url_for('main.index'))
+        return redirect(url_for('auth.reset_password_request'))
     form = ResetPasswordForm()
     if form.validate_on_submit():
         user.set_password(form.password.data)
